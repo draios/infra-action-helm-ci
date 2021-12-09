@@ -1,0 +1,62 @@
+name: 'Helm CI'
+description: GitHub Action for hanlde CI of helm charts, Sysdig way'
+inputs:
+  chart_dir:
+    description: "path to chart directory. Example: k8s/redis"
+    required: true
+  dry_run:
+    description: "whether to actually create git tag and push the chart"
+    required: false
+    default: "false"
+  artifactory_url:
+    description: "Artifactory repo URL"
+    required: false
+    default: "https://artifactory.internal.sysdig.com:443/artifactory/helm-local/"
+  artifactory_username:
+    required: true
+  artifactory_password:
+    required: true
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: get chart name
+      id: chart_name
+      uses: mikefarah/yq@v4.14.1
+      with:
+        cmd: "yq eval '.name' ${{ inputs.chart_dir }}/Chart.yaml"
+
+    - name: show chart name
+      run: |
+        echo "found chart name in Chart.yaml: ${{ steps.chart_name.outputs.result }}"
+
+    - name: bump version
+      id: bump_version
+      uses: mathieudutour/github-tag-action@v5.6
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        tag_prefix: helm/${{ steps.chart_name.outputs.result }}-
+        dry_run: ${{ inputs.dry_run }}
+
+    - name: test package helm chart
+      uses: draios/action-helm-tools@v1.0.6
+      if: ${{ inputs.dry_run }}
+      env:
+        ACTION: package
+        CHART_DIR: ${{ inputs.chart_dir }}
+        CHART_VERSION: ${{ steps.bump_version.outputs.new_version }}
+        ARTIFACTORY_URL: ${{ inputs.artifactory_url }}
+        ARTIFACTORY_USERNAME: ${{ inputs.artifactory_username }}
+        ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
+
+    - name: publish helm chart to artifactory
+      uses: draios/action-helm-tools@v1.0.6
+      if: ${{ ! inputs.dry_run }}
+      env:
+        ACTION: publish
+        CHART_DIR: ${{ inputs.chart_dir }}
+        CHART_VERSION: ${{ steps.bump_version.outputs.new_version }}
+        ARTIFACTORY_URL: ${{ inputs.artifactory_url }}
+        ARTIFACTORY_USERNAME: ${{ inputs.artifactory_username }}
+        ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
