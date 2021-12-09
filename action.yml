@@ -16,6 +16,9 @@ inputs:
     required: true
   artifactory_password:
     required: true
+  github_token:
+    description: GITHUB_TOKEN secret
+    required: true
 
 
 runs:
@@ -35,7 +38,7 @@ runs:
       id: bump_version
       uses: mathieudutour/github-tag-action@v5.6
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ inputs.github_token }}
         tag_prefix: helm/${{ steps.chart_name.outputs.result }}-
         dry_run: ${{ inputs.dry_run }}
 
