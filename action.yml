@@ -31,6 +31,7 @@ runs:
         cmd: "yq eval '.name' ${{ inputs.chart_dir }}/Chart.yaml"
 
     - name: show chart name
+      shell: bash
       run: |
         echo "found chart name in Chart.yaml: ${{ steps.chart_name.outputs.result }}"
 
