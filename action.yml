@@ -45,7 +45,7 @@ runs:
 
     - name: test package helm chart
       uses: draios/action-helm-tools@v1.0.6
-      if: ${{ inputs.dry_run }}
+      if: ${{ inputs.dry_run == 'false' }}
       env:
         ACTION: package
         CHART_DIR: ${{ inputs.chart_dir }}
@@ -56,7 +56,7 @@ runs:
 
     - name: publish helm chart to artifactory
       uses: draios/action-helm-tools@v1.0.6
-      if: ${{ ! inputs.dry_run }}
+      if: ${{ inputs.dry_run != 'true' }}
       env:
         ACTION: publish
         CHART_DIR: ${{ inputs.chart_dir }}
