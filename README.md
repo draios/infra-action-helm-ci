@@ -3,6 +3,8 @@
 GitHub Action for handle CI of helm charts in a repo
 This is a `composite` action leveraging the code of [draios/action-helm-tools](github.com/draios/action-helm-tools)
 
+**WARNING** You need an explicit checkout before calling this action
+
 ## Inputs
 
 ## Required
@@ -40,6 +42,7 @@ jobs:
   publish:
     runs-on: self-hosted
     steps:
+    - uses: actions/checkout@v2
     - uses: draios/infra-action-helm-ci@v1
       with:
         chart_dir: k8s/redis
