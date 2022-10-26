@@ -37,7 +37,7 @@ runs:
 
     - name: bump version
       id: bump_version
-      uses: mathieudutour/github-tag-action@v5.6
+      uses: mathieudutour/github-tag-action@v6.1
       with:
         github_token: ${{ inputs.github_token }}
         tag_prefix: helm/${{ steps.chart_name.outputs.result }}-
