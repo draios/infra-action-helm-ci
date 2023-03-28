@@ -26,7 +26,7 @@ runs:
   steps:
     - name: get chart name
       id: chart_name
-      uses: mikefarah/yq@v4.14.1
+      uses: mikefarah/yq@v4.33.1
       with:
         cmd: "yq eval '.name' ${{ inputs.chart_dir }}/Chart.yaml"
 
