@@ -44,7 +44,7 @@ runs:
         dry_run: ${{ inputs.dry_run }}
 
     - name: test package helm chart
-      uses: draios/action-helm-tools@v1.1.0
+      uses: draios/action-helm-tools@v1.2.4
       if: ${{ inputs.dry_run == 'false' }}
       env:
         ACTION: package
@@ -55,7 +55,7 @@ runs:
         ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
 
     - name: publish helm chart to artifactory
-      uses: draios/action-helm-tools@v1.1.0
+      uses: draios/action-helm-tools@v1.2.4
       if: ${{ inputs.dry_run != 'true' }}
       env:
         ACTION: publish
