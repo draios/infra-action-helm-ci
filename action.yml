@@ -13,12 +13,35 @@ inputs:
     required: false
     default: "https://artifactory.internal.sysdig.com:443/artifactory/helm-local/"
   artifactory_username:
+    description: "username to use for artifactory"
     required: true
   artifactory_password:
+    description: "password to use for artifactory"
     required: true
   github_token:
     description: GITHUB_TOKEN secret
     required: true
+  push_to_gar:
+    description: "whether or not to push chart to GAR"
+    required: false
+    default: "false"
+  gar_username:
+    description: "username to use to access GAR, possibile values are _json_key, _json_key_base64."
+    required: false
+  gar_json_key:
+    description: "json or json_b64 payload used as password to access GAR."
+    required: false
+  gar_url:
+    description: "url domain used by google cloud for GAR."
+    required: false
+    default: "us-docker.pkg.dev"
+  gar_chart_prefix:
+    description: "prefix to use in front of chart name."
+    required: false
+    default: ""
+  gcloud_project:
+    description: "name of the gcloud project id, which the artifact registry is part of."
+    required: false
 
 
 runs:
@@ -64,3 +87,20 @@ runs:
         ARTIFACTORY_URL: ${{ inputs.artifactory_url }}
         ARTIFACTORY_USERNAME: ${{ inputs.artifactory_username }}
         ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
+
+    - name: "publish helm chart to GAR"
+      uses: draios/action-helm-pusher@v0.0.9
+      if: ${{ inputs.push_to_gar == 'true' }}
+      env:
+        DEST_REGISTRY: "GAR"
+        GAR_USERNAME: ${{ inputs.gar_username }}
+        GAR_JSON_KEY: ${{ inputs.gar_json_key }}
+        ARTIFACTORY_USERNAME: ${{ inputs.artifactory_username }}
+        ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
+        GAR_URL: ${{ inputs.gar_url }}
+        GCLOUD_PROJECT: ${{ inputs.gcloud_project }}
+        CHART_DIR: ${{ inputs.chart_dir }}
+        CHART_PREFIX: ${{ inputs.gar_chart_prefix }}
+        CHART_VERSION: ${{ steps.bump_version.outputs.new_version }}
+        DEBUG: "TRUE"
+        DRYRUN: ${{ inputs.dry_run }}
