@@ -35,6 +35,10 @@ inputs:
     description: "url domain used by google cloud for GAR."
     required: false
     default: "us-docker.pkg.dev"
+  gar_chart_prefix:
+    description: "prefix to use in front of chart name."
+    required: false
+    default: ""
   gcloud_project:
     description: "name of the gcloud project id, which the artifact registry is part of."
     required: false
@@ -96,6 +100,7 @@ runs:
         GAR_URL: ${{ inputs.gar_url }}
         GCLOUD_PROJECT: ${{ inputs.gcloud_project }}
         CHART_DIR: ${{ inputs.chart_dir }}
+        CHART_PREFIX: ${{ inputs.gar_chart_prefix }}
         CHART_VERSION: ${{ steps.bump_version.outputs.new_version }}
         DEBUG: "TRUE"
         DRYRUN: ${{ inputs.dry_run }}
