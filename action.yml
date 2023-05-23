@@ -89,7 +89,7 @@ runs:
         ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
 
     - name: "publish helm chart to GAR"
-      uses: draios/action-helm-pusher@v0.0.9
+      uses: draios/action-helm-pusher@v0.0.10
       if: ${{ inputs.push_to_gar == 'true' }}
       env:
         DEST_REGISTRY: "GAR"
