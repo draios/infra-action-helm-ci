@@ -12,6 +12,14 @@ inputs:
     description: "Artifactory repo URL"
     required: false
     default: "https://artifactory.internal.sysdig.com:443/artifactory/helm-local/"
+  artifactory_pull_url:
+    description: "Artifactory repo pull URL"
+    required: false
+    default: "https://artifactory.internal.sysdig.com:443/artifactory/helm/"
+  artifactory_push_url:
+    description: "Artifactory repo push URL"
+    required: false
+    default: "https://artifactory.internal.sysdig.com:443/artifactory/helm-local/"
   artifactory_username:
     description: "username to use for artifactory"
     required: true
@@ -95,6 +103,9 @@ runs:
         DEST_REGISTRY: "GAR"
         GAR_USERNAME: ${{ inputs.gar_username }}
         GAR_JSON_KEY: ${{ inputs.gar_json_key }}
+        ARTIFACTORY_URL: "${{ inputs.artifactory_url }}"
+        ARTIFACTORY_PULL_URL: "${{ inputs.artifactory_pull_url }}"
+        ARTIFACTORY_PUSH_URL: "${{ inputs.artifactory_push_url }}"
         ARTIFACTORY_USERNAME: ${{ inputs.artifactory_username }}
         ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
         GAR_URL: ${{ inputs.gar_url }}
