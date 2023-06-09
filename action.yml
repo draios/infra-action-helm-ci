@@ -103,7 +103,7 @@ runs:
         DEST_REGISTRY: "GAR"
         GAR_USERNAME: ${{ inputs.gar_username }}
         GAR_JSON_KEY: ${{ inputs.gar_json_key }}
-        ARTIFACTORY_URL: "${{ inputs.artifactory_url }}"
+        ARTIFACTORY_URL: "${{ inputs.artifactory_pull_url }}"
         ARTIFACTORY_PULL_URL: "${{ inputs.artifactory_pull_url }}"
         ARTIFACTORY_PUSH_URL: "${{ inputs.artifactory_push_url }}"
         ARTIFACTORY_USERNAME: ${{ inputs.artifactory_username }}
