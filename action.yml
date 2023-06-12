@@ -8,6 +8,10 @@ inputs:
     description: "whether to actually create git tag and push the chart"
     required: false
     default: "false"
+  push_to_artifactory:
+    description: "whether or not to push chart to Artifactory"
+    required: false
+    default: "true"
   artifactory_url:
     description: "Artifactory repo URL"
     required: false
@@ -87,7 +91,7 @@ runs:
 
     - name: publish helm chart to artifactory
       uses: draios/action-helm-tools@v1.2.4
-      if: ${{ inputs.dry_run != 'true' }}
+      if: ${{ inputs.dry_run != 'true' && inputs.push_to_artifactory != 'false' }}
       env:
         ACTION: publish
         CHART_DIR: ${{ inputs.chart_dir }}
