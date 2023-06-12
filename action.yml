@@ -26,10 +26,10 @@ inputs:
     default: "https://artifactory.internal.sysdig.com:443/artifactory/helm-local/"
   artifactory_username:
     description: "username to use for artifactory"
-    required: true
+    required: false
   artifactory_password:
     description: "password to use for artifactory"
-    required: true
+    required: false
   github_token:
     description: GITHUB_TOKEN secret
     required: true
