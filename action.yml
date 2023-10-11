@@ -78,27 +78,21 @@ runs:
         tag_prefix: helm/${{ steps.chart_name.outputs.result }}-
         dry_run: ${{ inputs.dry_run }}
 
-    - name: test package helm chart
-      uses: draios/action-helm-tools@v1.2.4
-      if: ${{ inputs.dry_run == 'false' }}
+    - name: "publish helm chart to Artifactory"
+      uses: draios/action-helm-pusher@v0.0.10
+      if: ${{ inputs.push_to_artifactory == 'true' }}
       env:
-        ACTION: package
-        CHART_DIR: ${{ inputs.chart_dir }}
-        CHART_VERSION: ${{ steps.bump_version.outputs.new_version }}
-        ARTIFACTORY_URL: ${{ inputs.artifactory_url }}
+        DEST_REGISTRY: "ARTIFACTORY"
+        ARTIFACTORY_URL: "${{ inputs.artifactory_pull_url }}"
+        ARTIFACTORY_PULL_URL: "${{ inputs.artifactory_pull_url }}"
+        ARTIFACTORY_PUSH_URL: "${{ inputs.artifactory_push_url }}"
         ARTIFACTORY_USERNAME: ${{ inputs.artifactory_username }}
         ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
-
-    - name: publish helm chart to artifactory
-      uses: draios/action-helm-tools@v1.2.4
-      if: ${{ inputs.dry_run != 'true' && inputs.push_to_artifactory != 'false' }}
-      env:
-        ACTION: publish
         CHART_DIR: ${{ inputs.chart_dir }}
+        CHART_PREFIX: ${{ inputs.gar_chart_prefix }}
         CHART_VERSION: ${{ steps.bump_version.outputs.new_version }}
-        ARTIFACTORY_URL: ${{ inputs.artifactory_url }}
-        ARTIFACTORY_USERNAME: ${{ inputs.artifactory_username }}
-        ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
+        DEBUG: "TRUE"
+        DRYRUN: ${{ inputs.dry_run }}
 
     - name: "publish helm chart to GAR"
       uses: draios/action-helm-pusher@v0.0.10
@@ -107,11 +101,6 @@ runs:
         DEST_REGISTRY: "GAR"
         GAR_USERNAME: ${{ inputs.gar_username }}
         GAR_JSON_KEY: ${{ inputs.gar_json_key }}
-        ARTIFACTORY_URL: "${{ inputs.artifactory_pull_url }}"
-        ARTIFACTORY_PULL_URL: "${{ inputs.artifactory_pull_url }}"
-        ARTIFACTORY_PUSH_URL: "${{ inputs.artifactory_push_url }}"
-        ARTIFACTORY_USERNAME: ${{ inputs.artifactory_username }}
-        ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
         GAR_URL: ${{ inputs.gar_url }}
         GCLOUD_PROJECT: ${{ inputs.gcloud_project }}
         CHART_DIR: ${{ inputs.chart_dir }}
