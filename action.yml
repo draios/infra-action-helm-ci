@@ -78,9 +78,9 @@ runs:
         tag_prefix: helm/${{ steps.chart_name.outputs.result }}-
         dry_run: ${{ inputs.dry_run }}
 
-    - name: test package helm chart
+    - name: Test package helm chart for Artifactory
       uses: draios/action-helm-tools@v1.2.4
-      if: ${{ inputs.dry_run == 'false' }}
+      if: ${{ inputs.dry_run == 'false' && inputs.push_to_artifactory != 'false' }}
       env:
         ACTION: package
         CHART_DIR: ${{ inputs.chart_dir }}
@@ -89,7 +89,7 @@ runs:
         ARTIFACTORY_USERNAME: ${{ inputs.artifactory_username }}
         ARTIFACTORY_PASSWORD: ${{ inputs.artifactory_password }}
 
-    - name: publish helm chart to artifactory
+    - name: Publish helm chart to Artifactory
       uses: draios/action-helm-tools@v1.2.4
       if: ${{ inputs.dry_run != 'true' && inputs.push_to_artifactory != 'false' }}
       env:
