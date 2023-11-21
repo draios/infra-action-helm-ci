@@ -54,7 +54,9 @@ inputs:
   gcloud_project:
     description: "name of the gcloud project id, which the artifact registry is part of."
     required: false
-
+  custom_tag:
+    description: "Expose abillity to push a custom tag. This overrides any automatic bump settings. Use with caution"
+    required: false
 
 runs:
   using: "composite"
@@ -72,11 +74,12 @@ runs:
 
     - name: bump version
       id: bump_version
-      uses: mathieudutour/github-tag-action@v5.6
+      uses: mathieudutour/github-tag-action@v6.1
       with:
         github_token: ${{ inputs.github_token }}
         tag_prefix: helm/${{ steps.chart_name.outputs.result }}-
         dry_run: ${{ inputs.dry_run }}
+        custom_tag: ${{ inputs.custom_tag }}
 
     - name: "publish helm chart to Artifactory"
       uses: draios/action-helm-pusher@v0.0.10
