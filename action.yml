@@ -61,7 +61,7 @@ runs:
   steps:
     - name: get chart name
       id: chart_name
-      uses: mikefarah/yq@v4.33.3
+      uses: mikefarah/yq@v4.43.1
       with:
         cmd: "yq eval '.name' ${{ inputs.chart_dir }}/Chart.yaml"
 
@@ -72,7 +72,7 @@ runs:
 
     - name: bump version
       id: bump_version
-      uses: mathieudutour/github-tag-action@v5.6
+      uses: mathieudutour/github-tag-action@v6.2
       with:
         github_token: ${{ inputs.github_token }}
         tag_prefix: helm/${{ steps.chart_name.outputs.result }}-
