@@ -21,7 +21,7 @@ This is a `composite` action leveraging the code of [draios/action-helm-tools](g
 
 ## Outputs
 
-- `helm_chart_version`: The version of the bumped Helm chart
+- `helm_chart_new_version`: The version of the bumped Helm chart
 
 ## Example workflow
 

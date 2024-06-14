@@ -56,7 +56,7 @@ inputs:
     required: false
 
 outputs:
-  helm_chart_version:
+  helm_chart_new_version:
     description: "Version of the bumped Helm chart"
     value: ${{ steps.bump_version.outputs.new_version }}
 
