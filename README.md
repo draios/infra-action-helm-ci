@@ -19,6 +19,10 @@ This is a `composite` action leveraging the code of [draios/action-helm-tools](g
 - `artifactory_url`: Artifactory repo URL (default: "https://artifactory.internal.sysdig.com:443/artifactory/helm-local/)
 - `artifactory_username`: Artifcatory Username
 
+## Outputs 
+
+- `helm_chart_version`: The version of the bumped Helm chart
+
 ## Example workflow
 
 Perform all checks on pull requests
