@@ -54,6 +54,10 @@ inputs:
   gcloud_project:
     description: "name of the gcloud project id, which the artifact registry is part of."
     required: false
+  fetch_all_tags:
+    description: "Boolean to fetch all tags for a repo (if false, only the last 100 will be fetched)."
+    required: false
+    default: "false"
 
 outputs:
   helm_chart_new_version:
@@ -81,6 +85,7 @@ runs:
         github_token: ${{ inputs.github_token }}
         tag_prefix: helm/${{ steps.chart_name.outputs.result }}-
         dry_run: ${{ inputs.dry_run }}
+        fetch_all_tags: ${{ inputs.fetch_all_tags }}
 
     - name: "publish helm chart to Artifactory"
       uses: draios/action-helm-pusher@v0.0.10
